@@ -1,4 +1,4 @@
-import { nanoid } from "@/lib/nanoid";
+import { nanoid } from "@/utils/functions";
 import { timestamp, varchar } from "drizzle-orm/mysql-core";
 
 export const id = varchar("id", { length: 16 })

@@ -2,6 +2,8 @@ import { env } from "@/lib/env";
 import { drizzle } from "drizzle-orm/mysql2";
 import mysql, { Pool } from "mysql2/promise";
 
+export * as schema from "./schema";
+
 let database;
 let connection: Pool;
 
