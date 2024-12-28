@@ -20,6 +20,6 @@ export const generatePasswordResetToken = async (email: string) => {
 
   return {
     token: passwordResetToken.token,
-    expires: passwordResetToken.expires,
+    expiresAt: passwordResetToken.expiresAt,
   };
 };

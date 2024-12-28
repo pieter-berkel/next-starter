@@ -4,8 +4,9 @@ import {
   mysqlTable as table,
   varchar,
 } from "drizzle-orm/mysql-core";
-import { timestamps } from "../helpers";
 import type { AdapterAccountType } from "next-auth/adapters";
+
+import { timestamps } from "../helpers";
 import { users } from "./users";
 
 export const accounts = table(

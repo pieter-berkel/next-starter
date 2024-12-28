@@ -1,7 +1,7 @@
-import { env } from "@/lib/env";
 import { drizzle, MySql2Database } from "drizzle-orm/mysql2";
 import mysql, { Pool } from "mysql2/promise";
 
+import { env } from "@/lib/env";
 import * as schema from "./schema";
 
 let database: MySql2Database<typeof schema>;

@@ -1,4 +1,5 @@
 import { AuthError } from "next-auth";
+
 import { SignIn } from "@/features/auth/components/sign-in";
 
 export default async function SignInPage({

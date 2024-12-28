@@ -1,7 +1,16 @@
-import { database, schema } from "@/db";
-import { CreateUser, User } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import "server-only";
+
 import { cache } from "react";
+import { eq } from "drizzle-orm";
+
+import { CreateUser, User } from "@/db/schema";
+import { database, schema } from "@/db";
+
+export const getUserById = cache(async (id: string) => {
+  return await database.query.users.findFirst({
+    where: (fields, { eq }) => eq(fields.id, id),
+  });
+});
 
 export const getUserByEmail = cache(async (email: string) => {
   return await database.query.users.findFirst({

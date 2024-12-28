@@ -1,10 +1,10 @@
 "use server";
 
 import { getUserByEmail } from "@/data/users";
+import { actionClient } from "@/lib/safe-action";
 import { generatePasswordResetToken } from "../services/generate-password-reset-token";
 import { sendPasswordResetTokenEmail } from "../services/send-password-reset-token-email";
 import { forgotPasswordSchema } from "../validations/forgot-password-schema";
-import { actionClient } from "@/lib/safe-action";
 
 export const forgotPasswordAction = actionClient
   .schema(forgotPasswordSchema)

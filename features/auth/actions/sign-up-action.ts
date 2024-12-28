@@ -1,11 +1,12 @@
 "use server";
 
-import { createUser, getUserByEmail } from "@/data/users";
 import bcrypt from "bcryptjs";
+
+import { createUser, getUserByEmail } from "@/data/users";
+import { actionClient } from "@/lib/safe-action";
 import { generateVerificationToken } from "../services/generate-verification-token";
 import { sendVerificationEmail } from "../services/send-verification-email";
 import { signUpSchema } from "../validations/sign-up-schema";
-import { actionClient } from "@/lib/safe-action";
 
 export const signUpAction = actionClient
   .schema(signUpSchema)

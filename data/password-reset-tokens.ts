@@ -1,6 +1,9 @@
-import { database, schema } from "@/db";
+import "server-only";
+
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
+
+import { database, schema } from "@/db";
 
 export const getPasswordResetTokenByIdentifier = async (email: string) => {
   return await database.query.passwordResetTokens.findFirst({

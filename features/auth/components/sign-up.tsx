@@ -1,12 +1,11 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-import PlaceholderLogo from "../assets/auth-placeholder-logo.svg";
 import Image from "next/image";
 import Link from "next/link";
-import { providerMap } from "@/features/auth/lib/auth";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { SignUpForm } from "./sign-up-form";
+import PlaceholderLogo from "../assets/auth-placeholder-logo.svg";
 import { ProviderButtons } from "./provider-buttonts";
+import { SignUpForm } from "./sign-up-form";
 
 export const SignUp = () => {
   return (
@@ -27,17 +26,13 @@ export const SignUp = () => {
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
           <ProviderButtons />
-          {providerMap.some((provider) => provider.id === "credentials") ? (
-            <>
-              <div className="relative">
-                <Separator />
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-4 text-sm">
-                  or
-                </div>
-              </div>
-              <SignUpForm />
-            </>
-          ) : null}
+          <div className="relative">
+            <Separator />
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-4 text-sm">
+              or
+            </div>
+          </div>
+          <SignUpForm />
         </CardContent>
       </Card>
       <div className="p-4 text-center text-sm">

@@ -1,12 +1,13 @@
 "use server";
 
 import { z } from "zod";
+
+import { getUserByEmail } from "@/data/users";
+import { actionClient } from "@/lib/safe-action";
 import { signIn } from "@/features/auth/lib/auth";
 import { generateVerificationToken } from "../services/generate-verification-token";
-import { getUserByEmail } from "@/data/users";
-import { credentialsSchema } from "../validations/credentials-schema";
 import { sendVerificationEmail } from "../services/send-verification-email";
-import { actionClient } from "@/lib/safe-action";
+import { credentialsSchema } from "../validations/credentials-schema";
 
 export const credentialsSignInAction = actionClient
   .schema(credentialsSchema)

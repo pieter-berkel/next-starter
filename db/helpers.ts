@@ -1,5 +1,6 @@
-import { nanoid } from "@/utils/functions";
 import { timestamp, varchar } from "drizzle-orm/mysql-core";
+
+import { nanoid } from "@/utils/functions";
 
 export const id = varchar("id", { length: 16 })
   .primaryKey()

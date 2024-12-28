@@ -1,16 +1,14 @@
-import { database, schema } from "@/db";
-import { nanoid } from "@/utils/functions";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import NextAuth from "next-auth";
-
-import { getUserByEmail } from "@/data/users";
-import { env } from "@/lib/env";
 import bcrypt from "bcryptjs";
-import { DefaultSession } from "next-auth";
-import { Provider } from "next-auth/providers";
+import NextAuth, { DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
+
+import { getUserByEmail, getUserById } from "@/data/users";
+import { nanoid } from "@/utils/functions";
+import { database, schema } from "@/db";
+import { credentialsSchema } from "../validations/credentials-schema";
 
 declare module "next-auth" {
   interface Session {
@@ -19,50 +17,6 @@ declare module "next-auth" {
     } & DefaultSession["user"];
   }
 }
-
-const providers: Provider[] = [
-  Google({
-    allowDangerousEmailAccountLinking: true,
-    clientId: env.AUTH_GOOGLE_ID,
-    clientSecret: env.AUTH_GOOGLE_SECRET,
-  }),
-  GitHub({
-    allowDangerousEmailAccountLinking: true,
-    clientId: env.AUTH_GITHUB_ID,
-    clientSecret: env.AUTH_GITHUB_SECRET,
-  }),
-  Credentials({
-    async authorize(credentials) {
-      if (
-        typeof credentials.email !== "string" ||
-        typeof credentials.password !== "string"
-      ) {
-        return null;
-      }
-      const user = await getUserByEmail(credentials.email);
-      if (!user || !user.password) {
-        return null;
-      }
-      const match = await bcrypt.compare(credentials.password, user.password);
-      if (!match) {
-        return null;
-      }
-      return user;
-    },
-  }),
-];
-
-export const providerMap = providers.map((provider) => {
-  if (typeof provider === "function") {
-    const providerData = provider();
-    return {
-      id: providerData.id,
-      name: providerData.name,
-    };
-  } else {
-    return { id: provider.id, name: provider.name };
-  }
-});
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: DrizzleAdapter(database, {
@@ -81,6 +35,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     generateSessionToken: () => nanoid(),
   },
   callbacks: {
+    signIn: async ({ user, account }) => {
+      if (account?.type !== "credentials") return true;
+      if (!user.id) return false;
+
+      const existingUser = await getUserById(user.id);
+      if (!existingUser || !existingUser.emailVerified) return false;
+
+      return true;
+    },
     session: async ({ session, token }) => ({
       ...session,
       user: {
@@ -89,5 +52,31 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   },
-  providers,
+  providers: [
+    Google({
+      allowDangerousEmailAccountLinking: true,
+    }),
+    GitHub({
+      allowDangerousEmailAccountLinking: true,
+    }),
+    Credentials({
+      async authorize(credentials) {
+        const validation = credentialsSchema.safeParse(credentials);
+
+        if (!validation.success) return null;
+
+        const { email, password } = validation.data;
+
+        const user = await getUserByEmail(email);
+
+        if (!user || !user.password) return null;
+
+        const match = await bcrypt.compare(password, user.password);
+
+        if (!match) return null;
+
+        return user;
+      },
+    }),
+  ],
 });

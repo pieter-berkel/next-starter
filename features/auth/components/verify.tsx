@@ -1,12 +1,11 @@
-import { AlertDescription } from "@/components/ui/alert";
-import { LuArrowRight, LuCircleAlert } from "react-icons/lu";
-import { Alert } from "@/components/ui/alert";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-import PlaceholderLogo from "../assets/auth-placeholder-logo.svg";
 import Image from "next/image";
 import Link from "next/link";
+import { LuArrowRight, LuCircleAlert } from "react-icons/lu";
+
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { buttonVariants } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import PlaceholderLogo from "../assets/auth-placeholder-logo.svg";
 
 export const Verify = ({ error }: { error?: string }) => {
   return (

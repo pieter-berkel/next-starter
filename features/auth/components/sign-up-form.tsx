@@ -1,11 +1,13 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { LuArrowRight, LuLoader } from "react-icons/lu";
+import { toast } from "sonner";
 import { z } from "zod";
+
 import { Button } from "@/components/ui/button";
-import { useAction } from "next-safe-action/hooks";
 import {
   Form,
   FormControl,
@@ -15,9 +17,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { signUpSchema } from "../validations/sign-up-schema";
-import { toast } from "sonner";
 import { signUpAction } from "../actions/sign-up-action";
+import { signUpSchema } from "../validations/sign-up-schema";
 
 export const SignUpForm = () => {
   const form = useForm<z.infer<typeof signUpSchema>>({

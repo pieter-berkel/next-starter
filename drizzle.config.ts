@@ -1,4 +1,5 @@
 import "dotenv/config";
+
 import { Config } from "drizzle-kit";
 
 const config: Config = {

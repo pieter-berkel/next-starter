@@ -1,14 +1,15 @@
 "use server";
 
-import { z } from "zod";
 import bcrypt from "bcryptjs";
-import { getUserByEmail, updateUser } from "@/data/users";
+import { z } from "zod";
+
 import {
   deletePasswordResetTokensByIdentifier,
   getPasswordResetTokenByToken,
 } from "@/data/password-reset-tokens";
-import { resetPasswordSchema } from "../validations/reset-password-schema";
+import { getUserByEmail, updateUser } from "@/data/users";
 import { actionClient } from "@/lib/safe-action";
+import { resetPasswordSchema } from "../validations/reset-password-schema";
 
 export const resetPasswordAction = actionClient
   .schema(resetPasswordSchema)

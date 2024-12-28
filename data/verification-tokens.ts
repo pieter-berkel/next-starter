@@ -1,3 +1,5 @@
+import "server-only";
+
 import { database, schema } from "@/db";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";

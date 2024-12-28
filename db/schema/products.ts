@@ -1,4 +1,5 @@
 import { mysqlTable as table, varchar } from "drizzle-orm/mysql-core";
+
 import { id, timestamps } from "../helpers";
 
 export const products = table("products", {

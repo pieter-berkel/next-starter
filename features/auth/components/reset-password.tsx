@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-import PlaceholderLogo from "../assets/auth-placeholder-logo.svg";
 import Image from "next/image";
 import Link from "next/link";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import PlaceholderLogo from "../assets/auth-placeholder-logo.svg";
 import { ResetPasswordForm } from "./reset-password-form";
 
 export const ResetPassword = ({ token }: { token: string }) => {
