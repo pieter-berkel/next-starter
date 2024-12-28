@@ -1,14 +1,16 @@
-import NextAuth, { DefaultSession } from "next-auth";
-import bcrypt from "bcryptjs";
+import { database, schema } from "@/db";
+import { nanoid } from "@/utils/functions";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import NextAuth from "next-auth";
+
+import { getUserByEmail } from "@/data/users";
+import { env } from "@/lib/env";
+import bcrypt from "bcryptjs";
+import { DefaultSession } from "next-auth";
+import { Provider } from "next-auth/providers";
+import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
-import Credentials from "next-auth/providers/credentials";
-import { database } from "@/db";
-import { nanoid } from "@/utils/functions";
-import { getUserByEmail } from "@/data/users";
-import { Provider } from "next-auth/providers";
-import { env } from "@/lib/env";
 
 declare module "next-auth" {
   interface Session {
@@ -30,27 +32,21 @@ const providers: Provider[] = [
     clientSecret: env.AUTH_GITHUB_SECRET,
   }),
   Credentials({
-    credentials: {
-      email: {},
-      password: {},
-    },
     async authorize(credentials) {
-      if (typeof credentials.email !== "string" || typeof credentials.password !== "string") {
+      if (
+        typeof credentials.email !== "string" ||
+        typeof credentials.password !== "string"
+      ) {
         return null;
       }
-
       const user = await getUserByEmail(credentials.email);
-
       if (!user || !user.password) {
         return null;
       }
-
       const match = await bcrypt.compare(credentials.password, user.password);
-
       if (!match) {
         return null;
       }
-
       return user;
     },
   }),
@@ -68,10 +64,18 @@ export const providerMap = providers.map((provider) => {
   }
 });
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  adapter: DrizzleAdapter(database, {
+    accountsTable: schema.accounts,
+    usersTable: schema.users,
+    sessionsTable: schema.sessions,
+    verificationTokensTable: schema.verificationTokens,
+  }),
   trustHost: true,
-  adapter: DrizzleAdapter(database),
-  providers,
+  pages: {
+    signIn: "/sign-in",
+    newUser: "/sign-up",
+  },
   session: {
     strategy: "jwt",
     generateSessionToken: () => nanoid(),
@@ -85,4 +89,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   },
+  providers,
 });

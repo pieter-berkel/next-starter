@@ -5,11 +5,19 @@ import { useForm } from "react-hook-form";
 import { LuArrowRight, LuLoader } from "react-icons/lu";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useAction } from "next-safe-action/hooks";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { signUpSchema } from "../schemas/sign-up-schema";
-import { signUp } from "../server/actions/sign-up";
+import { signUpSchema } from "../validations/sign-up-schema";
 import { toast } from "sonner";
+import { signUpAction } from "../actions/sign-up-action";
 
 export const SignUpForm = () => {
   const form = useForm<z.infer<typeof signUpSchema>>({
@@ -21,22 +29,30 @@ export const SignUpForm = () => {
     },
   });
 
+  const { execute, isPending } = useAction(signUpAction, {
+    onError: ({ error }) => {
+      if (error.serverError) {
+        return toast.error(error.serverError);
+      }
+    },
+    onSuccess: () => {
+      form.reset();
+      toast.success(
+        "Je account is aangemaakt. Controleer je email (en spam folder) voor de verificatie link.",
+      );
+    },
+  });
+
   const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
-    const result = await signUp(values);
-
-    if (result?.error) {
-      return toast.error(result.error);
-    }
-
-    form.reset();
-    toast.success("Je account is aangemaakt. Controleer je email (en spam folder) voor de verificatie link.");
+    execute(values);
   };
-
-  const isLoading = form.formState.isSubmitting;
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4"
+      >
         <FormField
           control={form.control}
           name="email"
@@ -70,15 +86,23 @@ export const SignUpForm = () => {
             <FormItem>
               <FormLabel>Wachtwoord bevestigen</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Wachtwoord bevestigen" {...field} />
+                <Input
+                  type="password"
+                  placeholder="Wachtwoord bevestigen"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isLoading}>
+        <Button type="submit" disabled={isPending}>
           <span>Aanmelden</span>
-          {isLoading ? <LuLoader className="ml-2 size-4 animate-spin" /> : <LuArrowRight className="ml-2 size-4" />}
+          {isPending ? (
+            <LuLoader className="ml-2 size-4 animate-spin" />
+          ) : (
+            <LuArrowRight className="ml-2 size-4" />
+          )}
         </Button>
       </form>
     </Form>

@@ -5,12 +5,20 @@ import { useForm } from "react-hook-form";
 import { LuArrowRight, LuLoader } from "react-icons/lu";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { resetPasswordSchema } from "../schemas/reset-password-schema";
-import { resetPassword } from "../server/actions/reset-password";
+import { resetPasswordSchema } from "../validations/reset-password-schema";
 import { useRouter } from "next/navigation";
+import { resetPasswordAction } from "../actions/reset-password-action";
+import { useAction } from "next-safe-action/hooks";
 
 export const ResetPasswordForm = ({ token }: { token: string }) => {
   const router = useRouter();
@@ -23,23 +31,34 @@ export const ResetPasswordForm = ({ token }: { token: string }) => {
     },
   });
 
+  const { execute, isPending } = useAction(
+    resetPasswordAction.bind(null, token),
+    {
+      onError: ({ error }) => {
+        if (error.serverError) {
+          return toast.error(error.serverError);
+        }
+      },
+      onSuccess: () => {
+        form.reset();
+        toast.success(
+          "Je wachtwoord is gewijzigd. Je kunt nu inloggen met je nieuwe wachtwoord.",
+        );
+        router.push("/sign-in");
+      },
+    },
+  );
+
   const onSubmit = async (values: z.infer<typeof resetPasswordSchema>) => {
-    const result = await resetPassword({ ...values, token });
-
-    if (result?.error) {
-      return toast.error(result.error);
-    }
-
-    form.reset();
-    toast.success("Je wachtwoord is gewijzigd. Je kunt nu inloggen met je nieuwe wachtwoord.");
-    router.push("/sign-in");
+    execute(values);
   };
-
-  const isLoading = form.formState.isSubmitting;
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4"
+      >
         <FormField
           control={form.control}
           name="password"
@@ -60,15 +79,23 @@ export const ResetPasswordForm = ({ token }: { token: string }) => {
             <FormItem>
               <FormLabel>Wachtwoord bevestigen</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Wachtwoord bevestigen" {...field} />
+                <Input
+                  type="password"
+                  placeholder="Wachtwoord bevestigen"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isLoading}>
+        <Button type="submit" disabled={isPending}>
           <span>Wachtwoord wijzigen</span>
-          {isLoading ? <LuLoader className="ml-2 size-4 animate-spin" /> : <LuArrowRight className="ml-2 size-4" />}
+          {isPending ? (
+            <LuLoader className="ml-2 size-4 animate-spin" />
+          ) : (
+            <LuArrowRight className="ml-2 size-4" />
+          )}
         </Button>
       </form>
     </Form>

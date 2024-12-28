@@ -1,8 +1,8 @@
 import { AuthError } from "next-auth";
-import { providerMap, signIn } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { formatProviderIcon } from "../utils/format-provider-icon";
 import { Button } from "@/components/ui/button";
+import { providerMap, signIn } from "../lib/auth";
 
 export const ProviderButtons = ({ redirectTo }: { redirectTo?: string }) => {
   return (
@@ -10,7 +10,8 @@ export const ProviderButtons = ({ redirectTo }: { redirectTo?: string }) => {
       className="grid gap-2"
       style={{
         gridTemplateColumns: `repeat(${Math.min(
-          providerMap.filter((provider) => provider.id !== "credentials").length,
+          providerMap.filter((provider) => provider.id !== "credentials")
+            .length,
           3,
         )}, 1fr)`,
       }}

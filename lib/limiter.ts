@@ -28,7 +28,15 @@ export class RateLimitError extends Error {
   remaining: number;
   reset: number;
 
-  constructor({ limit, remaining, reset }: { limit: number; remaining: number; reset: number }) {
+  constructor({
+    limit,
+    remaining,
+    reset,
+  }: {
+    limit: number;
+    remaining: number;
+    reset: number;
+  }) {
     super("Too many requests");
     this.name = "RateLimitError";
     this.limit = limit;

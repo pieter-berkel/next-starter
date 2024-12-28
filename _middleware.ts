@@ -9,7 +9,3 @@ export const config = {
     "/((?!api/|_next/|favicon.ico|sitemap.xml|robots.txt|manifest.webmanifest).*)",
   ],
 };
-
-export default function middleware() {
-  return;
-}

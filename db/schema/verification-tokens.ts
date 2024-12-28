@@ -1,11 +1,16 @@
-import { primaryKey, mysqlTable as table, timestamp, varchar } from "drizzle-orm/mysql-core";
+import {
+  primaryKey,
+  mysqlTable as table,
+  timestamp,
+  varchar,
+} from "drizzle-orm/mysql-core";
 
 export const verificationTokens = table(
   "verification_tokens",
   {
     identifier: varchar("identifier", { length: 255 }).notNull(),
     token: varchar("token", { length: 255 }).notNull(),
-    expires: timestamp("expires").notNull(),
+    expires: timestamp("expires_at").notNull(),
   },
   (t) => [
     {

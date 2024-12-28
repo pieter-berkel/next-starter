@@ -10,7 +10,13 @@ export const ResetPassword = ({ token }: { token: string }) => {
     <div className="w-full max-w-sm rounded-xl bg-muted text-muted-foreground shadow">
       <Card className="shadow-none">
         <CardHeader className="flex flex-col items-center">
-          <Image src={PlaceholderLogo} alt="" width={128} height={128} className="mb-4 mt-2 h-10" />
+          <Image
+            src={PlaceholderLogo}
+            alt=""
+            width={128}
+            height={128}
+            className="mb-4 mt-2 h-10"
+          />
           <CardTitle className="text-lg">Wachtwoord wijzigen</CardTitle>
           <p className="text-balance text-center text-sm text-muted-foreground">
             Vul jouw gegevens in om je wachtwoord te wijzigen.

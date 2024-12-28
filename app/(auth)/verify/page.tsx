@@ -1,11 +1,12 @@
 import { Verify } from "@/features/auth/components/verify";
-import { verify } from "@/features/auth/server/actions/verify";
+import { verify } from "@/features/auth/services/verify";
 
-export default async function VerifyPage(props: { searchParams: Promise<{ token: string }> }) {
-  const searchParams = await props.searchParams;
-
-  const { token } = searchParams;
-
+export default async function VerifyPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ token: string }>;
+}) {
+  const token = (await searchParams).token;
   const result = await verify(token);
 
   return (

@@ -1,9 +1,12 @@
-import { resend } from "@/lib/resend";
+import "server-only";
+
+import { sendEmail } from "@/lib/email";
+import { env } from "@/lib/env";
 
 export const sendVerificationEmail = async (email: string, token: string) => {
-  const link = `${process.env.NEXT_PUBLIC_URL}/verify?token=${token}`;
+  const link = `${env.HOST_NAME}/verify?token=${token}`;
 
-  await resend.emails.send({
+  await sendEmail({
     from: `Ecomtrends <info@ecomtrends.nl>`,
     to: email,
     subject: "Emailadres verifiëren",

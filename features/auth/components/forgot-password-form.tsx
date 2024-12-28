@@ -5,11 +5,19 @@ import { useForm } from "react-hook-form";
 import { LuArrowRight, LuLoader } from "react-icons/lu";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { forgotPasswordSchema } from "../schemas/forgot-password-schema";
-import { forgotPassword } from "../server/actions/forgot-password";
+import { forgotPasswordSchema } from "../validations/forgot-password-schema";
+import { forgotPasswordAction } from "../actions/forgot-password-action";
+import { useAction } from "next-safe-action/hooks";
 
 export const ForgotPasswordForm = () => {
   const form = useForm<z.infer<typeof forgotPasswordSchema>>({
@@ -19,24 +27,30 @@ export const ForgotPasswordForm = () => {
     },
   });
 
+  const { execute, isPending } = useAction(forgotPasswordAction, {
+    onError: ({ error }) => {
+      if (error.serverError) {
+        return toast.error(error.serverError);
+      }
+    },
+    onSuccess: () => {
+      form.reset();
+      toast.success(
+        "Je wachtwoord reset token is verstuurd. Controleer je email (en spam folder) voor de link om je wachtwoord te resetten.",
+      );
+    },
+  });
+
   const onSubmit = async (values: z.infer<typeof forgotPasswordSchema>) => {
-    const result = await forgotPassword(values);
-
-    if (result?.error) {
-      return toast.error(result.error);
-    }
-
-    form.reset();
-    toast.success(
-      "Je wachtwoord reset token is verstuurd. Controleer je email (en spam folder) voor de link om je wachtwoord te resetten.",
-    );
+    execute(values);
   };
-
-  const isLoading = form.formState.isSubmitting;
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4"
+      >
         <FormField
           control={form.control}
           name="email"
@@ -50,9 +64,13 @@ export const ForgotPasswordForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isLoading}>
+        <Button type="submit" disabled={isPending}>
           <span>Wachtwoord vergeten</span>
-          {isLoading ? <LuLoader className="ml-2 size-4 animate-spin" /> : <LuArrowRight className="ml-2 size-4" />}
+          {isPending ? (
+            <LuLoader className="ml-2 size-4 animate-spin" />
+          ) : (
+            <LuArrowRight className="ml-2 size-4" />
+          )}
         </Button>
       </form>
     </Form>

@@ -13,9 +13,17 @@ export const Verify = ({ error }: { error?: string }) => {
     <div className="w-full max-w-sm rounded-xl bg-muted text-muted-foreground shadow">
       <Card className="shadow-none">
         <CardHeader className="flex flex-col items-center">
-          <Image src={PlaceholderLogo} alt="" width={128} height={128} className="mb-4 mt-2 h-10" />
+          <Image
+            src={PlaceholderLogo}
+            alt=""
+            width={128}
+            height={128}
+            className="mb-4 mt-2 h-10"
+          />
           <CardTitle className="text-lg">Verificatie bij Ecomtrends</CardTitle>
-          <p className="text-balance text-center text-sm text-muted-foreground">Verifieer je account om verder te gaan.</p>
+          <p className="text-balance text-center text-sm text-muted-foreground">
+            Verifieer je account om verder te gaan.
+          </p>
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
           {error ? (
@@ -26,7 +34,9 @@ export const Verify = ({ error }: { error?: string }) => {
           ) : (
             <>
               <Alert>
-                <AlertDescription>Je account is geverifieerd! U kunt nu doorgaan naar inloggen.</AlertDescription>
+                <AlertDescription>
+                  Je account is geverifieerd! U kunt nu doorgaan naar inloggen.
+                </AlertDescription>
               </Alert>
               <Link href="/sign-in" className={buttonVariants()}>
                 <span>Inloggen</span>

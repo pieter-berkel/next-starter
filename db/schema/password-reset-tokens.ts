@@ -1,11 +1,16 @@
-import { primaryKey, mysqlTable as table, timestamp, varchar } from "drizzle-orm/mysql-core";
+import {
+  primaryKey,
+  mysqlTable as table,
+  timestamp,
+  varchar,
+} from "drizzle-orm/mysql-core";
 
 export const passwordResetTokens = table(
   "password_reset_tokens",
   {
     identifier: varchar("identifier", { length: 255 }).notNull(),
     token: varchar("token", { length: 255 }).notNull(),
-    expires: timestamp("expires").notNull(),
+    expiresAt: timestamp("expires_at").notNull(),
   },
   (t) => [
     {
