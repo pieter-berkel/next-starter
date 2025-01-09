@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { LuArrowRight, LuLoader } from "react-icons/lu";
+import { useAction } from "next-safe-action/hooks";
+import Link from "next/link";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -19,12 +19,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+
 import { credentialsSignInAction } from "../actions/credentials-sign-in-action";
-import { credentialsSchema } from "../validations/credentials-schema";
+import { credentialsValidation } from "../validations/credentials-validation";
 
 export const CredentialsForm = () => {
-  const form = useForm<z.infer<typeof credentialsSchema>>({
-    resolver: zodResolver(credentialsSchema),
+  const form = useForm<z.infer<typeof credentialsValidation>>({
+    resolver: zodResolver(credentialsValidation),
     defaultValues: {
       email: "",
       password: "",
@@ -39,7 +40,7 @@ export const CredentialsForm = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof credentialsSchema>) => {
+  const onSubmit = async (values: z.infer<typeof credentialsValidation>) => {
     execute(values);
   };
 

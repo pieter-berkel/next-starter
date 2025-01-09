@@ -1,10 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { LuArrowRight, LuLoader } from "react-icons/lu";
+import { useAction } from "next-safe-action/hooks";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -18,14 +18,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+
 import { resetPasswordAction } from "../actions/reset-password-action";
-import { resetPasswordSchema } from "../validations/reset-password-schema";
+import { resetPasswordValidation } from "../validations/reset-password-validation";
 
 export const ResetPasswordForm = ({ token }: { token: string }) => {
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof resetPasswordSchema>>({
-    resolver: zodResolver(resetPasswordSchema),
+  const form = useForm<z.infer<typeof resetPasswordValidation>>({
+    resolver: zodResolver(resetPasswordValidation),
     defaultValues: {
       password: "",
       confirmPassword: "",
@@ -50,7 +51,7 @@ export const ResetPasswordForm = ({ token }: { token: string }) => {
     },
   );
 
-  const onSubmit = async (values: z.infer<typeof resetPasswordSchema>) => {
+  const onSubmit = async (values: z.infer<typeof resetPasswordValidation>) => {
     execute(values);
   };
 

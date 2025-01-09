@@ -1,4 +1,4 @@
-import { ResetPassword } from "@/features/auth/components/reset-password";
+import { ResetPasswordCard } from "@/features/auth/components/reset-password-card";
 
 export default async function ResetPasswordPage({
   searchParams,
@@ -9,7 +9,7 @@ export default async function ResetPasswordPage({
 
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <ResetPassword token={token} />
+      <ResetPasswordCard token={token} />
     </div>
   );
 }

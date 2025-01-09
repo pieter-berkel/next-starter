@@ -1,6 +1,6 @@
 import { AuthError } from "next-auth";
 
-import { SignIn } from "@/features/auth/components/sign-in";
+import { SignInCard } from "@/features/auth/components/sign-in-card";
 
 export default async function SignInPage({
   searchParams,
@@ -11,7 +11,7 @@ export default async function SignInPage({
 
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <SignIn errorType={error} />
+      <SignInCard errorType={error} />
     </div>
   );
 }

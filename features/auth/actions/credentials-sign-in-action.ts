@@ -2,15 +2,16 @@
 
 import { z } from "zod";
 
-import { getUserByEmail } from "@/data/users";
 import { actionClient } from "@/lib/safe-action";
 import { signIn } from "@/features/auth/lib/auth";
-import { generateVerificationToken } from "../services/generate-verification-token";
-import { sendVerificationEmail } from "../services/send-verification-email";
-import { credentialsSchema } from "../validations/credentials-schema";
+import { getUserByEmail } from "@/data-access/users";
+
+import { generateVerificationToken } from "../utils/generate-verification-token";
+import { sendVerificationEmail } from "../utils/send-verification-email";
+import { credentialsValidation } from "../validations/credentials-validation";
 
 export const credentialsSignInAction = actionClient
-  .schema(credentialsSchema)
+  .schema(credentialsValidation)
   .schema(async (prevSchema) => {
     return prevSchema.extend({ redirectTo: z.string().optional() });
   })

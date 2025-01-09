@@ -1,9 +1,9 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { LuArrowRight, LuLoader } from "react-icons/lu";
+import { useAction } from "next-safe-action/hooks";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -17,12 +17,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+
 import { signUpAction } from "../actions/sign-up-action";
-import { signUpSchema } from "../validations/sign-up-schema";
+import { signUpValidation } from "../validations/sign-up-validation";
 
 export const SignUpForm = () => {
-  const form = useForm<z.infer<typeof signUpSchema>>({
-    resolver: zodResolver(signUpSchema),
+  const form = useForm<z.infer<typeof signUpValidation>>({
+    resolver: zodResolver(signUpValidation),
     defaultValues: {
       email: "",
       password: "",
@@ -44,7 +45,7 @@ export const SignUpForm = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
+  const onSubmit = async (values: z.infer<typeof signUpValidation>) => {
     execute(values);
   };
 

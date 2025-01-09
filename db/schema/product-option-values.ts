@@ -3,7 +3,7 @@ import { mysqlTable as table, varchar } from "drizzle-orm/mysql-core";
 
 import { id, timestamps } from "../helpers";
 import { productOptions } from "./product-options";
-import { variantsOptionValuesMap } from "./product-variants";
+import { variantsToOptionValues } from "./product-variants";
 
 export const productOptionValues = table("product_option_values", {
   id,
@@ -24,7 +24,7 @@ export const productOptionValuesRelations = relations(
       fields: [productOptionValues.productOptionId],
       references: [productOptions.id],
     }),
-    variantsOptionValuesMap: many(variantsOptionValuesMap),
+    variantsOptionValuesMap: many(variantsToOptionValues),
   }),
 );
 

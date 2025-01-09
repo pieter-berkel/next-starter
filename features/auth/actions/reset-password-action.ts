@@ -3,16 +3,17 @@
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 
+import { actionClient } from "@/lib/safe-action";
 import {
   deletePasswordResetTokensByIdentifier,
   getPasswordResetTokenByToken,
-} from "@/data/password-reset-tokens";
-import { getUserByEmail, updateUser } from "@/data/users";
-import { actionClient } from "@/lib/safe-action";
-import { resetPasswordSchema } from "../validations/reset-password-schema";
+} from "@/data-access/password-reset-tokens";
+import { getUserByEmail, updateUser } from "@/data-access/users";
+
+import { resetPasswordValidation } from "../validations/reset-password-validation";
 
 export const resetPasswordAction = actionClient
-  .schema(resetPasswordSchema)
+  .schema(resetPasswordValidation)
   .bindArgsSchemas<[token: z.ZodString]>([z.string().min(1)])
   .action(async ({ parsedInput, bindArgsParsedInputs }) => {
     const { password } = parsedInput;

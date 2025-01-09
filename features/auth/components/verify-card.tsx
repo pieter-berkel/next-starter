@@ -1,13 +1,14 @@
+import { LuArrowRight, LuCircleAlert } from "react-icons/lu";
 import Image from "next/image";
 import Link from "next/link";
-import { LuArrowRight, LuCircleAlert } from "react-icons/lu";
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 import PlaceholderLogo from "../assets/auth-placeholder-logo.svg";
 
-export const Verify = ({ error }: { error?: string }) => {
+export const VerifyCard = ({ error }: { error?: string }) => {
   return (
     <div className="w-full max-w-sm rounded-xl bg-muted text-muted-foreground shadow">
       <Card className="shadow-none">

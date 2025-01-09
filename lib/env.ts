@@ -19,6 +19,12 @@ export const env = createEnv({
 
     // RESEND
     RESEND_API_KEY: z.string().min(1),
+
+    // STORAGE
+    STORAGE_AWS_ACCESS_KEY_ID: z.string().min(1),
+    STORAGE_AWS_SECRET_ACCESS_KEY: z.string().min(1),
+    STORAGE_AWS_BUCKET_NAME: z.string().min(1),
+    STORAGE_AWS_REGION: z.string().min(1),
   },
   client: {},
   runtimeEnv: {
@@ -31,5 +37,9 @@ export const env = createEnv({
     AUTH_GOOGLE_ID: process.env.AUTH_GOOGLE_ID,
     AUTH_GOOGLE_SECRET: process.env.AUTH_GOOGLE_SECRET,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
+    STORAGE_AWS_ACCESS_KEY_ID: process.env.STORAGE_AWS_ACCESS_KEY_ID,
+    STORAGE_AWS_SECRET_ACCESS_KEY: process.env.STORAGE_AWS_SECRET_ACCESS_KEY,
+    STORAGE_AWS_BUCKET_NAME: process.env.STORAGE_AWS_BUCKET_NAME,
+    STORAGE_AWS_REGION: process.env.STORAGE_AWS_REGION,
   },
 });

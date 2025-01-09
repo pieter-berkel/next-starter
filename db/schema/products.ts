@@ -14,6 +14,7 @@ import { productImages } from "./product-images";
 export const products = table("products", {
   id,
   title: varchar("title", { length: 255 }).notNull(),
+  subtitle: varchar("subtitle", { length: 255 }),
   slug: varchar("slug", { length: 255 }).notNull().unique(),
   status: mysqlEnum("status", ["draft", "published"]).notNull(),
   description: text("description"),
@@ -21,12 +22,12 @@ export const products = table("products", {
 });
 
 export const productsRelations = relations(products, ({ many }) => ({
-  productsCategoriesMap: many(productsCategoriesMap),
+  productsCategoriesMap: many(productsToCategories),
   images: many(productImages),
 }));
 
-export const productsCategoriesMap = table(
-  "products_categories_map",
+export const productsToCategories = table(
+  "product_to_categories",
   {
     productId: varchar("product_id", { length: 16 }).notNull(),
     categoryId: varchar("category_id", { length: 16 }).notNull(),
@@ -52,15 +53,15 @@ export const productsCategoriesMap = table(
   }),
 );
 
-export const productsCategoriesMapRelations = relations(
-  productsCategoriesMap,
+export const productsToCategoriesRelations = relations(
+  productsToCategories,
   ({ one }) => ({
     product: one(products, {
-      fields: [productsCategoriesMap.productId],
+      fields: [productsToCategories.productId],
       references: [products.id],
     }),
     category: one(productCategories, {
-      fields: [productsCategoriesMap.categoryId],
+      fields: [productsToCategories.categoryId],
       references: [productCategories.id],
     }),
   }),

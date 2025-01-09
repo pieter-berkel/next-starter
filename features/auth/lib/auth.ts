@@ -1,14 +1,15 @@
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import bcrypt from "bcryptjs";
 import NextAuth, { DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import bcrypt from "bcryptjs";
 
-import { getUserByEmail, getUserById } from "@/data/users";
-import { nanoid } from "@/utils/functions";
+import { nanoid } from "@/utils/nanoid";
+import { getUserByEmail, getUserById } from "@/data-access/users";
 import { database, schema } from "@/db";
-import { credentialsSchema } from "../validations/credentials-schema";
+
+import { credentialsValidation } from "../validations/credentials-validation";
 
 declare module "next-auth" {
   interface Session {
@@ -61,7 +62,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
     Credentials({
       async authorize(credentials) {
-        const validation = credentialsSchema.safeParse(credentials);
+        const validation = credentialsValidation.safeParse(credentials);
 
         if (!validation.success) return null;
 

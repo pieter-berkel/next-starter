@@ -5,7 +5,7 @@
  * As a reminder, this type of rate limiter only works when deploying to a single VPS instance.
  * The moment you scale up, you'll need to use a distributed rate limiter such as redis (or use upstash).
  */
-import { getIP } from "@/utils/functions";
+import { getIP } from "@/utils/get-ip";
 
 const trackers: Record<string, { count: number; expiresAt: number }> = {};
 

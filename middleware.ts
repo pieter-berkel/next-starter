@@ -1,4 +1,6 @@
-export const config = {
+import { MiddlewareConfig, NextRequest, NextResponse } from "next/server";
+
+export const config: MiddlewareConfig = {
   matcher: [
     /*
      * Match all paths except for:
@@ -9,3 +11,7 @@ export const config = {
     "/((?!api/|_next/|favicon.ico|sitemap.xml|robots.txt|manifest.webmanifest).*)",
   ],
 };
+
+export default function middleware(request: NextRequest) {
+  return NextResponse.next();
+}

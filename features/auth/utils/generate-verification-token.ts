@@ -4,7 +4,7 @@ import {
   createVerificationToken,
   deleteVerificationTokensByIdentifier,
   getVerificationTokenByIdentifier,
-} from "@/data/verification-tokens";
+} from "@/data-access/verification-tokens";
 
 export const generateVerificationToken = async (email: string) => {
   await deleteVerificationTokensByIdentifier(email);

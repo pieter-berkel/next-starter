@@ -8,7 +8,7 @@ import {
 } from "drizzle-orm/mysql-core";
 
 import { id, timestamps } from "../helpers";
-import { productsCategoriesMap } from "./products";
+import { productsToCategories } from "./products";
 
 export const productCategories = table("product_categories", {
   id,
@@ -31,7 +31,7 @@ export const productCategoriesRelations = relations(
       references: [productCategories.id],
     }),
     children: many(productCategories),
-    productsCategoriesMap: many(productsCategoriesMap),
+    productsCategoriesMap: many(productsToCategories),
   }),
 );
 

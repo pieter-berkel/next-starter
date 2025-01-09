@@ -1,13 +1,14 @@
 "use server";
 
-import { getUserByEmail } from "@/data/users";
 import { actionClient } from "@/lib/safe-action";
-import { generatePasswordResetToken } from "../services/generate-password-reset-token";
-import { sendPasswordResetTokenEmail } from "../services/send-password-reset-token-email";
-import { forgotPasswordSchema } from "../validations/forgot-password-schema";
+import { getUserByEmail } from "@/data-access/users";
+
+import { generatePasswordResetToken } from "../utils/generate-password-reset-token";
+import { sendPasswordResetTokenEmail } from "../utils/send-password-reset-token-email";
+import { forgotPasswordValidation } from "../validations/forgot-password-validation";
 
 export const forgotPasswordAction = actionClient
-  .schema(forgotPasswordSchema)
+  .schema(forgotPasswordValidation)
   .action(async ({ parsedInput }) => {
     const { email } = parsedInput;
 

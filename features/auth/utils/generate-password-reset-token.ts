@@ -4,7 +4,7 @@ import {
   createPasswordResetToken,
   deletePasswordResetTokensByIdentifier,
   getPasswordResetTokenByIdentifier,
-} from "@/data/password-reset-tokens";
+} from "@/data-access/password-reset-tokens";
 
 export const generatePasswordResetToken = async (email: string) => {
   await deletePasswordResetTokensByIdentifier(email);

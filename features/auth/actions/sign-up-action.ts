@@ -2,14 +2,15 @@
 
 import bcrypt from "bcryptjs";
 
-import { createUser, getUserByEmail } from "@/data/users";
 import { actionClient } from "@/lib/safe-action";
-import { generateVerificationToken } from "../services/generate-verification-token";
-import { sendVerificationEmail } from "../services/send-verification-email";
-import { signUpSchema } from "../validations/sign-up-schema";
+import { createUser, getUserByEmail } from "@/data-access/users";
+
+import { generateVerificationToken } from "../utils/generate-verification-token";
+import { sendVerificationEmail } from "../utils/send-verification-email";
+import { signUpValidation } from "../validations/sign-up-validation";
 
 export const signUpAction = actionClient
-  .schema(signUpSchema)
+  .schema(signUpValidation)
   .action(async ({ parsedInput }) => {
     const { email, password } = parsedInput;
 

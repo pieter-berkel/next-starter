@@ -1,10 +1,10 @@
 import "server-only";
 
-import { getUserByEmail, updateUser } from "@/data/users";
+import { getUserByEmail, updateUser } from "@/data-access/users";
 import {
   deleteVerificationTokensByIdentifier,
   getVerificationTokenByToken,
-} from "@/data/verification-tokens";
+} from "@/data-access/verification-tokens";
 
 export const verify = async (token: string) => {
   const existingToken = await getVerificationTokenByToken(token);

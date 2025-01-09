@@ -1,5 +1,5 @@
-import { Verify } from "@/features/auth/components/verify";
-import { verify } from "@/features/auth/services/verify";
+import { VerifyCard } from "@/features/auth/components/verify-card";
+import { verify } from "@/features/auth/utils/verify";
 
 export default async function VerifyPage({
   searchParams,
@@ -11,7 +11,7 @@ export default async function VerifyPage({
 
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <Verify error={result?.error} />
+      <VerifyCard error={result?.error} />
     </div>
   );
 }

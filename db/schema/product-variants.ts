@@ -34,12 +34,12 @@ export const productVariantsRelations = relations(
       fields: [productVariants.productId],
       references: [products.id],
     }),
-    variantsOptionValuesMap: many(variantsOptionValuesMap),
+    variantsOptionValuesMap: many(variantsToOptionValues),
   }),
 );
 
-export const variantsOptionValuesMap = table(
-  "variants_option_values_map",
+export const variantsToOptionValues = table(
+  "variants_to_option_values",
   {
     variantId: varchar("variant_id", { length: 16 }).notNull(),
     optionValueId: varchar("option_value_id", { length: 16 }).notNull(),
@@ -65,15 +65,15 @@ export const variantsOptionValuesMap = table(
   }),
 );
 
-export const variantsOptionValuesMapRelations = relations(
-  variantsOptionValuesMap,
+export const variantsToOptionValuesRelations = relations(
+  variantsToOptionValues,
   ({ one }) => ({
     productVariant: one(productVariants, {
-      fields: [variantsOptionValuesMap.variantId],
+      fields: [variantsToOptionValues.variantId],
       references: [productVariants.id],
     }),
     productOptionValue: one(productOptionValues, {
-      fields: [variantsOptionValuesMap.optionValueId],
+      fields: [variantsToOptionValues.optionValueId],
       references: [productOptionValues.id],
     }),
   }),

@@ -1,9 +1,9 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { LuArrowRight, LuLoader } from "react-icons/lu";
+import { useAction } from "next-safe-action/hooks";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -17,12 +17,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+
 import { forgotPasswordAction } from "../actions/forgot-password-action";
-import { forgotPasswordSchema } from "../validations/forgot-password-schema";
+import { forgotPasswordValidation } from "../validations/forgot-password-validation";
 
 export const ForgotPasswordForm = () => {
-  const form = useForm<z.infer<typeof forgotPasswordSchema>>({
-    resolver: zodResolver(forgotPasswordSchema),
+  const form = useForm<z.infer<typeof forgotPasswordValidation>>({
+    resolver: zodResolver(forgotPasswordValidation),
     defaultValues: {
       email: "",
     },
@@ -42,7 +43,7 @@ export const ForgotPasswordForm = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof forgotPasswordSchema>) => {
+  const onSubmit = async (values: z.infer<typeof forgotPasswordValidation>) => {
     execute(values);
   };
 

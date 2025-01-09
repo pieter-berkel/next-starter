@@ -1,7 +1,8 @@
 import { z } from "zod";
 
-export const resetPasswordSchema = z
+export const signUpValidation = z
   .object({
+    email: z.string().email({ message: "Ongeldig e-mailadres" }),
     password: z.string().min(8, { message: "Minimaal 8 karakters" }),
     confirmPassword: z.string(),
   })
