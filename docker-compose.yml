@@ -1,0 +1,14 @@
+services:
+  db:
+    image: mysql:8
+    restart: "unless-stopped"
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: starter
+      MYSQL_ROOT_PASSWORD: "abc123"
+
+volumes:
+  db_data:
